@@ -62,7 +62,11 @@ The pipeline generates the following output files:
 1. task1_output.txt: Predicted protein ORFs.
 2. task2_output.txt: Digested peptides.
 3. task3_output.txt: Peptide mass-to-charge data.
-4. task4_output_*.tsv: Ion statistics in tabular format.
+4. mode*.tsv: Ion statistics in tabular format for the following modes:
+   - mode1.tsv: Total peptides in the range of 1000–1500 Da.
+   - mode2.tsv: Distribution of peptides within the same range.
+   - mode3.tsv: Changes in the number of peptides across sliding windows.
+   - mode4.tsv: Peptides with unique m/z values across the proteome.
 
 ### Requirements
 - Python 3.x

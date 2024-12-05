@@ -38,7 +38,7 @@ python group9_task2.py -i task1_output.txt -o task2_output.txt -e $user_enzyme -
 mass_types=("mono" "aver")
 mass_type_idx=$(( RANDOM % ${#mass_types[@]} ))
 
-random_mass_type=${mass_types[mass_type_idx]}
+random_mass_type=${mass_types[$mass_type_idx]}
 
 charge=$(( RANDOM % 5 + 1 ))
 

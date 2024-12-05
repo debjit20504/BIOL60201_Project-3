@@ -14,9 +14,10 @@ def parse_arguments():
 
 def peptide_maker(seq: str, cut_site : str, missed_cleavages: int = 1):
     """
-    Splits a protein sequence into peptides based on the enzymes provided with support for missed clevages
+    Splits a protein sequence into peptides based on the enzymes provided with support for missed clevages.
     Args:
         seq (str) - Protein sequence
+        cut_site (str) - Clevage site
         missed_clevage (int) - Maximum number of missed clevages allowed
         
     Reuturns:
@@ -47,6 +48,22 @@ def peptide_maker(seq: str, cut_site : str, missed_cleavages: int = 1):
     return peptides
         
 def digester_output_maker(header : str, seq_info : set, file : str, peplen : int):
+    """
+    Writes digested peptide sequences to the output file in a specified format.
+    Args:
+        header (str): The FASTA header of the protein sequence.
+                    It identifies the source protein and will be used to label each peptide.
+        seq_info (set): A set of tuples containing:
+                        - peptide_seq (str): The peptide sequence after digestion.
+                        - missed_clevage (int): The number of missed cleavages in the peptide.
+                        - enzyme (str): The enzyme used for digestion.
+        file (str): Path to the output file where digested peptides will be written.
+        peplen (int): Minimum peptide length. Only peptides with lengths greater than or equal
+                    to this value will be included in the output.
+
+    Returns:
+        None, The function is just writing peptide sequences and metadata directly to the output file.
+    """
     counter = 1
     with open(file, 'a') as f:
         for peptide_seq, missed_clevage, enzyme in seq_info:
@@ -58,6 +75,7 @@ def digester_output_maker(header : str, seq_info : set, file : str, peplen : int
             
 if __name__ == '__main__':
     
+    # dictionary of enzymes with their cleavage sites and names
     enzyme = {
     't' : ['KR', 'Trypsin'],
     'lysc' : ['K', 'Endoproteinase Lys-C'],
@@ -67,7 +85,7 @@ if __name__ == '__main__':
     
     args = parse_arguments()
     protein_info = {}
-    with open(args.input, 'r') as file:
+    with open(args.input, 'r') as file: # Read the input protein FASTA file and store headers and sequences
         temp = ''
         for i in file.readlines():
             if ">" in i:
@@ -79,5 +97,5 @@ if __name__ == '__main__':
         os.remove(args.output)
         
     for header, seq in protein_info.items():
-        peptides = peptide_maker(seq, enzyme[args.enzyme], args.missed_clevage)
-        digester_output_maker(header, peptides, args.output, args.peptide_length)
+        peptides = peptide_maker(seq, enzyme[args.enzyme], args.missed_clevage) # Generating peptides for the current protein sequence
+        digester_output_maker(header, peptides, args.output, args.peptide_length) # Writing the peptides to the output file, ensuring minimum peptide length is satisfied
