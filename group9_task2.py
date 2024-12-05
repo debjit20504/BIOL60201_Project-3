@@ -3,12 +3,14 @@ import argparse
 
 def parse_arguments():
     enzymes = ['t', 'lysc', 'argc', 'v8']
-    parser = argparse.ArgumentParser(description='This script processes a miRNA target dataset performs quality control and outputs a summary with some figures figures.')
-    parser.add_argument('--input', '-i', required=True, help='Path to the input file containing protein sequence')
-    parser.add_argument('--output', '-o', help='Save the output in a file')
-    parser.add_argument('--enzyme', '-e', required=True, choices=enzymes, help='Specify the enzyme from one of these trypsin(t), endoproteinase Lys-C(lysc), endoproteinase Arg-C(argc), v8 proteinase(v8)')
-    parser.add_argument('--peptide_length', '-pm', default=7, type=int, help='')
-    parser.add_argument('--missed_clevage', '-mc', default=1, type=int, help='')
+    parser = argparse.ArgumentParser(description='This script processes a protein sequence dataset, performs enzymatic digestion, and outputs peptides based on specified criteria.')
+    parser.add_argument('--input', '-i', required=True, help='Path to the input file containing protein sequence.')
+    parser.add_argument('--output', '-o', default='task2_output.txt', help='Path to save the output file containing digested peptides.')
+    parser.add_argument('--enzyme', '-e', required=True, choices=enzymes, help='Specify the enzyme for digestion. Choose one of the following: '
+                        'trypsin(t), endoproteinase Lys-C(lysc), endoproteinase Arg-C(argc), v8 proteinase(v8).')
+    parser.add_argument('--peptide_length', '-pm', default=7, type=int, help='Minimum length of peptides to be included in the output. Peptides shorter than this length will be excluded (default: 7 amino acids).')
+    parser.add_argument('--missed_clevage', '-mc', default=1, type=int, help='Maximum number of missed cleavages allowed during digestion. '
+                        'A missed cleavage occurs when the enzyme skips a cleavage site (default: 1).')
     
     return parser.parse_args()
 
